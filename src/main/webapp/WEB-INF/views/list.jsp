@@ -9,6 +9,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>Book List</title>
+<link type="text/css" href="resources/framework.css" rel="stylesheet" />
 </head>
 <body>
 <a name="top"></a>
@@ -26,7 +27,7 @@
 	<tr>
 		<td>${book.rank }</td>
 		<td>${book.author }</td>
-		<td>${book.title }</td>
+		<td><a href="<c:url value='/viewBook?rank=${book.rank}' />">${book.title }</a></td>
 		<td>${book.publisher }: ${book.imprint }</td>
 		<td>${book.sales }</td>
 		<td><a href="<c:url value='/deleteBook?rank=${book.rank}' />">Delete</a></td>

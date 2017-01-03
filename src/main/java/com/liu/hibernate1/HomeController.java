@@ -43,7 +43,11 @@ public class HomeController {
 	@RequestMapping(value = "/list", method = RequestMethod.GET)
 	public String list(Model model) {
 		//Get the list of books from DAO
-		List<Book> books = DAO.getAllBooks();
+		String[] filters = {};
+		
+		
+		String filter = SearchAlg.getQueryString(filters);
+		List<Book> books = DAO.getAllBooks(filter);
 		//add this list to the model
 		model.addAttribute("bookList", books);
 		
@@ -71,7 +75,7 @@ public class HomeController {
 	@RequestMapping(value = "/deleteBook", method = RequestMethod.GET)
 	public String deleteBook(@RequestParam("rank") int rank,Model model){
 		DAO.deleteBook(rank);
-		List<Book> books = DAO.getAllBooks();
+		List<Book> books = DAO.getAllBooks("FROM Book");
 		
 		model.addAttribute("bookList", books);
 
@@ -79,5 +83,51 @@ public class HomeController {
 		return "list";
 	} 
 	
+	@RequestMapping(value = "/viewBook", method = RequestMethod.GET)
+	public String viewBook(@RequestParam("rank") int rank,Model model){
+		
+		int rankNum = rank;
+		String title = "";
+		String author = "";
+		int sales = 0;
+		String imprint = "";
+		String publisher = "";
+		int yearPublished = 0;
+		String genre = "";
+		int status = 0;
+		int borrower = 0;
+		
+		List<Book> books = DAO.getAllBooks("FROM Book");
+		
+		for(Book b : books){
+			if(b.getRank() == rank){
+				rankNum = rank;
+				title = b.getTitle();
+				author = b.getAuthor();
+				sales = b.getSales();
+				imprint = b.getImprint();
+				publisher = b.getPublisher();
+				yearPublished = b.getYearPublished();
+				genre = b.getGenre();
+				status = b.getStatus();
+				borrower = b.getBorrower();
+				
+			}
+		}
+		
+		model.addAttribute("rank", rankNum);
+		model.addAttribute("title", title);
+		model.addAttribute("author", author);
+		model.addAttribute("sales", sales);
+		model.addAttribute("imprint", imprint);
+		model.addAttribute("publisher", publisher);
+		model.addAttribute("yearPublished", yearPublished);
+		model.addAttribute("genre", genre);
+		model.addAttribute("status", status);
+		model.addAttribute("borrower", borrower);
+
+		
+		return "viewBook";
+	}
 
 }

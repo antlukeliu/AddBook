@@ -40,12 +40,15 @@ public class DAO {
 		return i;
 	}
 
-	public static List<Book> getAllBooks() {
+	
+	//"FROM Book WHERE sales > 1000000 and sales <3000000"
+	
+	public static List<Book> getAllBooks(String filter) {
 		if (factory == null)
 			setupFactory();
 		Session hibernateSession = factory.openSession();
 		hibernateSession.getTransaction().begin();
-		List<Book> books = hibernateSession.createQuery("FROM Book").list();
+		List<Book> books = hibernateSession.createQuery(filter).list();
 		hibernateSession.getTransaction().commit();
 		hibernateSession.close();
 		return books;
